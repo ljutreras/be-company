@@ -1,7 +1,7 @@
 from src.shared.databases.MongoConnection import MongoConnection
 
 class CreateBot:
-    def create(unique_id: str, actions: list[str], responses: list[str]) -> dict[str, any]:
+    def create(unique_id: str, actions: list[str], descriptions: list[str], responses: list[str]) -> dict[str, any]:
         """
         Crea un nuevo bot con las acciones y respuestas proporcionadas o actualiza un bot existente si el unique_id ya existe en la base de datos.
 
@@ -20,11 +20,16 @@ class CreateBot:
         """
         database = MongoConnection.create()
         finded_bot = database.find_one({"_id": unique_id})
-        result_dict = {action: response for action, response in zip(actions, responses)}
+        actions.append('ia no entiende')
+        descriptions.append('Cuando el usuario habla incoherencias , palabras como : asdasd, eweqwe')
+        responses.append('Disculpa, no te entiendo , me lo podrías explicar de otra manera por favor.🤗')
+        bot_data = {}
+        for action, description, response in zip(actions, descriptions, responses):
+            bot_data[action] = {'description': description, 'response': response}
 
         if finded_bot is not None:
-            database.update_many({'actions': finded_bot['actions']}, {'$set': {'actions': result_dict}}) 
-            return {"id": unique_id, "actions": result_dict}
+            database.update_many({'actions': finded_bot['actions']}, {'$set': {'actions': bot_data}}) 
+            return {"id": unique_id, "actions": bot_data}
         else:
-            database.insert_one({'_id': unique_id, 'actions': result_dict})
-            return {"id": unique_id, "actions": result_dict}
+            database.insert_one({'_id': unique_id, 'actions': bot_data})
+            return {"id": unique_id, "actions": bot_data}

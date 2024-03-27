@@ -16,7 +16,7 @@ model = load_model()
 
 @routes.post('/chatbots')
 async def create_bots(bot_model: BotModel):
-    response = CreateBot.create(bot_model.unique_id, bot_model.actions, bot_model.responses)
+    response = CreateBot.create(bot_model.unique_id, bot_model.actions, bot_model.descriptions, bot_model.responses)
     return {'data': response}
 
 @routes.get('/chatbots')

@@ -1,6 +1,6 @@
 import numpy as np
+from src.shared.functions.FeelingData import FeelingData
 from src.shared.databases.MongoConnection import MongoConnection
-
 
 class ChatBot:
     def create(unique_id: str, user_message: str, model: any) -> dict[str, any]:
@@ -24,29 +24,37 @@ class ChatBot:
             # {"id": "123", "response": "Hola, soy tu asistente virtual, en qué puedo ayudarte?"}
         """
         database = MongoConnection.create()
+        feeling = FeelingData.create(user_message, model)
         finded_bot = database.find_one({"_id": unique_id})
-        questions = [question for question in finded_bot['actions'].keys()]
+        actions = [action['description'] for action in finded_bot['actions'].values() if action['description'] != 'Cuando el usuario habla incoherencias , palabras como : asdasd, eweqwe']
 
         embeddings = {} 
         assignments = []
 
-        all_phrases = questions + [user_message]
+        all_phrases = actions + [user_message]
         all_embeddings = model(all_phrases) 
 
         for i, text in enumerate(all_phrases):
             embeddings[text] = all_embeddings[i]    
 
         for text in [user_message]:
-            similarities = {cat: 0 for cat in questions}
+            similarities = {cat: 0 for cat in actions}
 
-            for cat in questions:
+            for cat in actions:
                 sim = np.dot(embeddings[text], embeddings[cat])
-                if sim > 0.1:
+                if sim > 0:
                     similarities[cat] = sim
                 else:
                     similarities[cat] = 0   
-            if max(similarities.values()) > 0:
+            if max(similarities.values()) > 0.15:
                 assigned_category = max(similarities, key=similarities.get)
-            assignments.append(assigned_category)   
-
-        return {"id": unique_id, "response": finded_bot['actions'][assignments[0]]}
+            else:
+                assigned_category = 'ia no entiende'
+            assignments.append(assigned_category) 
+        
+        response = None
+        for value in finded_bot["actions"].values():
+            if value["description"] == assignments[0]:
+                response = value["response"]
+                break
+        return {"id": unique_id, "response": response, "feeling": f'El sentimiento del usuario es de carácter {feeling}'}

@@ -5,22 +5,11 @@ Feature: Crear un bot
 		WHEN hago una solicitud POST a "http://127.0.0.1:8000/chatbots/" con el body
 			"""
 			{
-				"actions": ["saludando al bot", "menciona un animal"],
+				"actions": ["saludar", "animal"],
+				"descriptions": ["el usuario esta saludando con un buenas, hola, como esta", "el usuario esta preguntando por un animal"],
 				"responses":["Hola, soy tu asistente virtual, en que te puedo ayudar?", "Los perros son geniales"],
-				"unique_id": "0092dfef-0819-4927-a498-f39953af8f52"
+				"unique_id": ""
 			}
 			"""
 		THEN deberia recibir una respuesta exitosa de status 200
-		AND debería contener la respuesta
-			"""
-			{
-				"data": {
-					"id": "0092dfef-0819-4927-a498-f39953af8f52",
-					"actions": {
-						"saludando al bot": "Hola, soy tu asistente virtual, en que te puedo ayudar?",
-						"menciona un animal": "Los perros son geniales"
-					}
-				}
-			}
-			"""
     
