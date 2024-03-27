@@ -37,20 +37,20 @@ class ChatBot:
         for i, text in enumerate(all_phrases):
             embeddings[text] = all_embeddings[i]    
 
-        for text in [user_message]:
-            similarities = {cat: 0 for cat in actions}
+        similarities = {cat: 0 for cat in actions}
 
-            for cat in actions:
-                sim = np.dot(embeddings[text], embeddings[cat])
-                if sim > 0:
-                    similarities[cat] = sim
-                else:
-                    similarities[cat] = 0   
-            if max(similarities.values()) > 0.15:
-                assigned_category = max(similarities, key=similarities.get)
+        for cat in actions:
+            sim = np.dot(embeddings[user_message], embeddings[cat])
+            if sim > 0:
+                similarities[cat] = sim
             else:
-                assigned_category = 'ia no entiende'
-            assignments.append(assigned_category) 
+                similarities[cat] = 0
+    
+        if max(similarities.values()) > 0.15:
+            assigned_category = max(similarities, key=similarities.get)
+        else:
+            assigned_category = 'Cuando el usuario habla incoherencias , palabras como : asdasd, eweqwe'
+        assignments.append(assigned_category) 
         
         response = None
         for value in finded_bot["actions"].values():
