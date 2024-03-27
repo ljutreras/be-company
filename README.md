@@ -12,11 +12,13 @@ El objetivo es crear un chatbot de manera dinamica que se pueda eliminar, modifi
 
 2. ¿Ya tienes tu entorno virtual? ¡Perfecto! Ahora solo falta activarlo:
 
-    Desde VSCode, sigue estos pasos:
+    ## GIT BASH
     ```
-    CTRL + SHIFT + P
-    Python: Select Interpreter
-    ⭐​Python 3.11 ('venv': venv) Recommended
+    source venv/Script/activate
+    ```
+    ## POWER SHELL
+    ```
+    .\venv\Scripts\activate
     ```
 
 3. A continuación, realiza la instalación de las librerías para nuestro proyecto. Se proporciona un archivo `requirements.txt` que se instala de la siguiente manera:
@@ -46,6 +48,17 @@ El objetivo es crear un chatbot de manera dinamica que se pueda eliminar, modifi
 
 
 ## 🥳 ¡Felicidades! Ya tienes todo lo necesario para levantar tu servidor 🥳
+
+# TEST
+
+1. Ya teniendo el servidor levantado en una consola, tedras que abrir una nueva terminal y activar el entorno virtual
+
+2. Una vez activado el entorno virtual, deberás ejecutar el comando
+
+    ```bash
+    behave test/
+    ```
+**Nota: Los tests están diseñados para hacer referencia a elementos específicos en la base de datos, por lo que se recomienda utilizar los unique_id proporcionados en los features de los tests para realizar pruebas del backend. Esto facilita la implementación de pruebas de Acceptance Test Driven Development (ATDD) con Cucumber.**
 
 ## Documentacion
 

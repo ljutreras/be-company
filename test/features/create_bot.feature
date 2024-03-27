@@ -5,7 +5,7 @@ Feature: Crear un bot
 		WHEN hago una solicitud POST a "http://127.0.0.1:8000/chatbots/" con el body
 			"""
 			{
-				"questions": ["saludando al bot", "menciona un animal"],
+				"actions": ["saludando al bot", "menciona un animal"],
 				"responses":["Hola, soy tu asistente virtual, en que te puedo ayudar?", "Los perros son geniales"],
 				"unique_id": "0092dfef-0819-4927-a498-f39953af8f52"
 			}
